@@ -9,7 +9,7 @@ classifier = pipeline(
 )
 
 # Ab welchem Score soll GPT-Vorschlag bevorzugt werden?
-CONFIDENCE_THRESHOLD = 30.0
+CONFIDENCE_THRESHOLD = 60.0
 
 def classify(text: str) -> Tuple[str, float, list[str]]:
     categories = load_categories()

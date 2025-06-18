@@ -24,7 +24,7 @@ def append_ignored(entry):
         f.write(json.dumps(entry, ensure_ascii=False) + "\n")
 
 def run_review():
-    print("🔍 Starte Kategorie-Review via GPT")
+    print("Starte Kategorie-Review via GPT")
     entries = load_suggestions()
     existing = set(load_categories())
 
@@ -33,14 +33,14 @@ def run_review():
         if not suggested:
             continue
 
-        print(f"\n📝 Anfrage: {entry['input']}")
-        print(f"🏷️  Systemkategorie: {entry['system_category']}")
-        print(f"💡 GPT-Vorschläge: {', '.join(suggested)}")
+        print(f"\n Anfrage: {entry['input']}")
+        print(f"Systemkategorie: {entry['system_category']}")
+        print(f"GPT-Vorschläge: {', '.join(suggested)}")
 
         review = review_classification(entry["input"], entry["system_category"], list(existing))
-        print(f"\n🧠 GPT-Review:\n{review}\n")
+        print(f"\n GPT-Review:\n{review}\n")
 
-        action = input("➕ [Enter] übernehmen, ⏭️ [s] skippen, ❌ [x] verwerfen: ").strip().lower()
+        action = input(" [Enter] übernehmen, [s] skippen, [x] verwerfen: ").strip().lower()
         if action == "":
             updated = sorted(existing.union(suggested))
             save_categories(updated)
