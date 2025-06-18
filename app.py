@@ -1,5 +1,5 @@
 import gradio as gr
-from transformers import pipeline
+from transformers.pipelines import pipeline
 
 # Modell laden
 classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
