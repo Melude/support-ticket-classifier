@@ -1,49 +1,45 @@
 import gradio as gr
-from transformers.pipelines import pipeline
+from logic.classifier import classify
+from logic.responder import generate_response
+from logic.category_store import load_categories
 
-# Modell laden
-classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+def classify_and_respond(user_input: str):
+    if not user_input.strip():
+        return "", "", "", ""
 
-# Kategorien
-CATEGORIES = [
-    "Rechnungen",
-    "Technisches Problem",
-    "Zugangsdaten vergessen",
-    "Kündigung",
-    "Allgemeine Anfrage"
-]
+    category, confidence, used_categories = classify(user_input)
+    response = generate_response(category, user_input)
+    return category, f"{confidence} %", response, ", ".join(used_categories)
 
-# Vorformulierte Antworten
-RESPONSE_TEMPLATES = {
-    "Rechnungen": "Du findest alle Rechnungen im Kundenbereich unter 'Meine Dokumente'.",
-    "Technisches Problem": "Bitte beschreibe das Problem genauer oder starte dein Gerät neu.",
-    "Zugangsdaten vergessen": "Nutze die 'Passwort vergessen'-Funktion auf der Login-Seite.",
-    "Kündigung": "Kündigungen kannst du im Kundenportal unter 'Verträge' einreichen.",
-    "Allgemeine Anfrage": "Wir melden uns schnellstmöglich bei dir zurück."
-}
-
-# Klassifikationslogik
-def classify_ticket(text):
-    result = classifier(text, CATEGORIES)
-    best_label = result["labels"][0]
-    score = round(result["scores"][0] * 100, 2)
-    reply = RESPONSE_TEMPLATES.get(best_label, "Wir kümmern uns um dein Anliegen.")
-    return f"{best_label} ({score}%)", reply
-
-# UI bauen
-with gr.Blocks(title="Support Ticket Classifier") as demo:
-    gr.Markdown("### Support Ticket Classifier\nOrdnet Anfragen automatisch Kategorien zu und schlägt passende Antworten vor.")
+with gr.Blocks(title="Support-Ticket Classifier") as demo:
+    gr.Markdown("""
+    # Support-Ticket Classifier  
+    Dieses Tool analysiert eingehende Kundenanfragen, ordnet sie automatisch einer passenden Kategorie zu  
+    und liefert eine kurze, professionelle GPT-Antwort.  
+    """)
 
     with gr.Row():
-        input_box = gr.Textbox(label="Support-Anfrage", placeholder="Was ist dein Anliegen?")
-    
+        user_input = gr.Textbox(
+            label="Kundenanfrage",
+            placeholder="Was ist dein Anliegen?",
+            lines=3,
+            autofocus=True
+        )
+
     with gr.Row():
-        category_output = gr.Textbox(label="Erkannte Kategorie")
-        reply_output = gr.Textbox(label="Antwortvorschlag")
+        category_output = gr.Textbox(label="Erkannte Kategorie", interactive=False)
+        confidence_output = gr.Textbox(label="Konfidenz", interactive=False)
 
-    submit_button = gr.Button("Klassifizieren")
+    reply_output = gr.Textbox(label="GPT-Antwort", lines=4, interactive=False)
+    categories_output = gr.Textbox(label="Verwendete Kategorien", interactive=False)
 
-    submit_button.click(fn=classify_ticket, inputs=input_box, outputs=[category_output, reply_output])
+    with gr.Row():
+        submit_btn = gr.Button("Anfrage analysieren")
 
-# Start
+    submit_btn.click(
+        fn=classify_and_respond,
+        inputs=user_input,
+        outputs=[category_output, confidence_output, reply_output, categories_output]
+    )
+
 demo.launch()
