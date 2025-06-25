@@ -42,9 +42,10 @@ def suggest_new_categories(text: str, current_category: str, categories: list[st
                     "content": (
                         "Du bist ein Assistent für Support-Ticket-Klassifikation. "
                         "Du bekommst eine Kundenanfrage und eine vom System zugewiesene Kategorie. "
-                        "Wenn die Kategorie nicht passt, schlage bitte 1–2 präzisere Kategorien vor – "
-                        "als einfache, durch Kommas getrennte Begriffe (ohne Einleitung oder Erklärung). "
-                        "Wenn die vorhandene Kategorie ausreichend ist, antworte mit: KEINE"
+                        "Wenn die Kategorie nicht exakt zutrifft oder zu allgemein ist, schlage bitte 1–2 präzisere Kategorien vor – "
+                        "verwende einfache, durch Kommas getrennte Begriffe ohne Einleitung oder Erklärung. "
+                        "Bevorzuge konkrete Kategorien wie „Kündigung“ statt generischer Sammelbegriffe wie „Vertragsfragen“. "
+                        "Wenn keine bessere Kategorie möglich ist, antworte mit: KEINE"
                     ),
                 },
                 {

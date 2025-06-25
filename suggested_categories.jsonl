@@ -3,3 +3,5 @@
 {"timestamp": "2025-06-24T14:14:51.786471", "input": "ich möchte gerne mein passwort zurücksetzen", "system_category": "", "suggested_categories": ["Passwortverwaltung"]}
 {"timestamp": "2025-06-24T14:15:12.163193", "input": "wo kann ich kündigen?", "system_category": "", "suggested_categories": ["Kündigung", "Vertragsfragen"]}
 {"timestamp": "2025-06-25T14:02:36.780738", "input": "ich möchte mein passwort ändern", "system_category": "", "suggested_categories": ["Passwortverwaltung", "Kontosicherheit"]}
+{"timestamp": "2025-06-25T14:48:05.397313", "input": "ich möchte gerne kündigen", "system_category": "", "suggested_categories": ["Kündigung", "Vertragsbeendigung"]}
+{"timestamp": "2025-06-25T15:03:33.436030", "input": "wo kann ich kündigen?", "system_category": "Passwortverwaltung", "suggested_categories": ["Kündigung"]}
